@@ -1,0 +1,12 @@
+<?php	
+		$styledb['name']='官方风格';
+		$styledb['keywords']='default';
+		$styledb['bodybgcolor']='';
+		$styledb['bodyBgImg']='';
+		$styledb['wrapWidth']='';
+		$styledb['fontColor']='';
+		$styledb['tableBorderColor']='';
+		$styledb['tableBgcolor']='';
+		$styledb['tableHeadBgColor']='';
+		$styledb['tableHeadBgImg']='';
+		$styledb['tableHeadFontColor']='';
