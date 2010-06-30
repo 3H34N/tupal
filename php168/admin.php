@@ -1,1 +1,1 @@
-<?php	 $admin_name='111111'; ?>
+<?php	 $admin_name='weiqk'; ?>
