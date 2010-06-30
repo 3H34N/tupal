@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--<?php
+$GuideFid[$fid]=str_replace("<a href='$webdb[www_url]' class='guide_menu'>&gt;首页</a>","",$GuideFid[$fid]);
+$fupId=intval($fupId);
+$topMenu[$fupId]='ck';
+print <<<EOT
+-->
+<head>
+<title>$titleDB[title]                                                   Powered By www.php168.com</title>
+<link rel="stylesheet" type="text/css" href="$webdb[www_url]/images/$STYLE/style.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="keywords" content="$titleDB[keywords]">
+<meta name="description" content="$titleDB[description]">
+</head>
+<SCRIPT LANGUAGE="JavaScript">
+//屏蔽可忽略的js脚本错误
+function killErr(){
+	return true;
+}
+window.onerror=killErr;
+</SCRIPT>
+<!--
+EOT;
+if($webdb[cookieDomain]){print <<<EOT
+-->
+<SCRIPT LANGUAGE="JavaScript">
+//解决不同域名的框架跨域问题
+document.domain = "$webdb[cookieDomain]";
+</SCRIPT>
+<!--
+EOT;
+}print <<<EOT
+-->
+<SCRIPT LANGUAGE="JavaScript" src="$webdb[www_url]/images/default/inc.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$webdb[www_url]/images/default/default.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src="$webdb[www_url]/images/default/swfobject.js"></SCRIPT>
+<!--****************下拉菜单开始****************-->
+<!--
+EOT;
+if($webdb[ShowMenu]){print <<<EOT
+-->
+<SCRIPT LANGUAGE="JavaScript" src="$webdb[www_url]/images/default/menu.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+EOT;
+@include(PHP168_PATH."php168/menu.js.php");
+foreach($MenuArray AS $key=>$array){
+$link_db='';
+foreach($array AS $key1=>$value){
+list($name,$url,$blank,$color,$lid)=explode("|",$value);
+if(ereg("^\/",$url)){
+	$url="$webdb[www_url]$url";
+}elseif(!ereg("://",$url)){
+	$url="$webdb[www_url]/$url";
+}
+$blank=$blank?"_blank":'';
+$color=$color?"$color":'';
+$link_db[]="<a href='$url' target='$blank' style='color:$color;'>$name</a>";
+}
+$_showlink=implode("<br>",$link_db);
+print <<<EOT
+-->
+var Menu_$key = "$_showlink";
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</SCRIPT>
+<!--
+EOT;
+}print <<<EOT
+-->
+<!--****************下拉菜单结束****************-->
+<body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="header_top" align="center">
+  <tr> 
+    <td class="L"></td>
+    <td> 
+      <div class="login"> 
+ <SCRIPT LANGUAGE="JavaScript">
+<!--
+document.write('<span id="head_loginer">$Load_Msg</span>');
+document.write('<div style="display:none;"><iframe src="$webdb[www_url]/do/hack.php?hack=login&iframeID=head_loginer" width=0 height=0></iframe></div>');
+//-->
+</SCRIPT>
+      </div>
+      <div class="Time"> 
+        <script language="JavaScript"> 
+<!---
+today=new Date();
+var hours = today.getHours();
+var minutes = today.getMinutes();
+var seconds = today.getSeconds();
+var timeValue = "<FONT COLOR=black>" + ((hours >12) ? hours -12 :hours); timeValue += ((minutes < 10) ? "<BLINK><FONT COLOR=black>:</FONT></BLINK>0" : "<BLINK><FONT COLOR=black>:</FONT></BLINK>") + minutes+"</FONT></FONT>";
+timeValue += (hours >= 12) ? " 下午 " : " 上午 ";
+function initArray(){
+this.length=initArray.arguments.length
+for(var i=0;i<this.length;i++)
+this[i+1]=initArray.arguments[i]  }
+var d=new initArray("<font color=RED>星期日","<font color=black>星期一","<font color=black>星期二","<font color=black>星期三","<font color=black>星期四","<font color=black>星期五","<font color=red>星期六"); document.write("<font color=black>",today.getFullYear(),"<font color=black>年","<font color=black>",today.getMonth()+1,"<font color=black>月","<font color=black>",today.getDate(),"<font color=black>日 </FONT>",d[today.getDay()+1]," ",timeValue);  //-->
+</script>
+        <a class=top 
+            onClick="this.style.behavior='url(#default#homepage)';this.setHomePage('$webdb[www_url]');" 
+            href="#">设为首页</a> <a class=top   href="javascript:window.external.AddFavorite('$webdb[www_url]','$webdb[webname]')">加入收藏</a> 
+      </div>
+    </td>
+    <td class="R"></td>
+  </tr>
+</table>
+<div id="header">
+      <div class="logo"><A HREF="$webdb[www_url]/"><img src="$webdb[www_url]/images/default/logo.gif" border=0></A></div>
+     $label[head_guides]
+</div>
+<div id="guide">
+      <div class="L"></div>
+      <div class="C"> 
+        <!--
+EOT;
+$detail=explode("\r\n",$webdb[guide_word]);
+foreach($detail AS $key=>$value){
+if(!$value)continue;
+list($Hname,$Hurl,$Hblank,$Hcolor,$Hlid)=explode("|",$value);
+if(ereg("^\/",$Hurl)){$Hurl="$webdb[www_url]$Hurl";}elseif(!ereg("://",$Hurl)){$Hurl="$webdb[www_url]$webdb[path]/$Hurl";}
+$Hblank=$Hblank?"_blank":'';
+$Hcolor=$Hcolor?"$Hcolor":'';
+$showmenu='';
+if($webdb[ShowMenu]&&$MenuArray[$Hlid])$showmenu=" onMouseOver='ShowMenu_mmc(Menu_$Hlid,100)' onMouseOut='HideMenu_mmc()' ";
+print <<<EOT
+-->
+        <span><a href="$Hurl" target="$Hblank" style="color:$Hcolor;" $showmenu>{$Hname}</a></span>
+        <!--
+EOT;
+}print <<<EOT
+-->
+      </div>
+      <div class="R"><a href="$webdb[www_url]/do/post.php">我要投稿</a> </div>
+</div>
+<!--
+EOT;
+if($GuideFid[$fid]){
+print <<<EOT
+-->
+<div class="nav_guide">
+ 当前位置：<a href="$webdb[www_url]/">{$webdb[webname]}</a> $GuideFid[$fid] 
+    </div>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+<SCRIPT LANGUAGE="JavaScript">
+<!--//目的是为了做风格方便
+document.write('<div style="clear:both;"></div><div class="wrap">');
+//-->
+</SCRIPT>
+<!--
+EOT;
+?>
+-->
