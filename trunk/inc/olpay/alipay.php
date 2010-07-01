@@ -1,14 +1,15 @@
-ï»¿<?php
+<?php
 !function_exists('html') && exit('ERR');
 
 if(!$webdb[alipay_id]){
-	showerr('ç³»ç»Ÿæ²¡æœ‰è®¾ç½®æ”¯ä»˜å®æ”¶æ¬¾å¸å·,æ‰€ä»¥ä¸èƒ½ä½¿ç”¨æ”¯ä»˜å®åœ¨çº¿æ”¯ä»˜');
+	showerr('ÏµÍ³Ã»ÓĞÉèÖÃÖ§¸¶±¦ÊÕ¿îÕÊºÅ,ËùÒÔ²»ÄÜÊ¹ÓÃÖ§¸¶±¦ÔÚÏßÖ§¸¶');
 }
 
-if($trade_status=='TRADE_FINISHED'){$alipay_partner=$webdb[alipay_partner];
-	$veryfy_result = file_get_contents("http://notify.alipay.com/trade/notify_query.do?notify_id=$notify_id&partner=2088001505801569");
+if($trade_status=='TRADE_FINISHED'){
+	$alipay_partner=$webdb[alipay_partner];
+	$veryfy_result = file_get_contents("http://notify.alipay.com/trade/notify_query.do?notify_id=$notify_id&partner=$alipay_partner");
 	if(!eregi("true$",$veryfy_result)){
-		showerr('å®‰å…¨éªŒè¯å‚æ•°æ ¡éªŒå¤±è´¥ï¼Œæ— æ³•å®Œæˆå……å€¼ï¼<hr>'.$veryfy_result);
+		showerr('°²È«ÑéÖ¤²ÎÊıĞ£ÑéÊ§°Ü£¬ÎŞ·¨Íê³É³äÖµ£¡<hr>'.$veryfy_result);
 	}
 
 	olpay_end($out_trade_no);
@@ -17,31 +18,44 @@ else
 {
 	$array=olpay_send();
 
-	$url  = "http://pay.phpwind.com/pay/create_payurl.php?";
+	$url  = $webdb['alipay_transport']."://www.alipay.com/cooperate/gateway.do?";
 
-	//æ”¯ä»˜å®çš„ä¸€äº›å°BUG,è¦ç‰¹åˆ«å¤„ç†è®¢å•å·
+	//Ö§¸¶±¦µÄÒ»Ğ©Ğ¡BUG,ÒªÌØ±ğ´¦Àí¶©µ¥ºÅ
 	if(eregi("^0",$array[numcode])){
 		$array[numcode]="$array[numcode]code";
 	}
 
 	$para = array(
 			'_input_charset' => 'gbk',
-			'service' => 'create_direct_pay_by_user',
-			'return_url' => $array[return_url],
-			'payment_type' => '1',
-			'subject' => $array[title],
-			'body' => $array[content],
-			'out_trade_no' => $array[numcode],
-			'total_fee' => $array[money],
-			'seller_email' => $webdb[alipay_id],
+			'service'		 => $webdb['alipay_service'],	//½»Ò×ÀàĞÍ
+			'partner'		 => $webdb['alipay_partner'],		//ºÏ×÷ÉÌ»§ºÅ
+			'return_url'	 => $array['return_url'],		//Í¬²½·µ»Ø
+			'payment_type'	 => 1,							//Ä¬ÈÏÎª1,²»ĞèÒªĞŞ¸Ä
+			'quantity'		 => 1,							//ÉÌÆ·ÊıÁ¿,Ç¿ÖÆÎª1,×Ü¶îÔÚprice´¦ËãºÃ
+			'subject'		 => $array['title'],			//ÉÌÆ·Ãû³Æ£¬±ØÌî
+			'body'			 => $array['content'],			//ÉÌÆ·ÃèÊö£¬±ØÌî
+			'out_trade_no'	 => $array['numcode'],			//ÉÌÆ·Íâ²¿½»Ò×ºÅ£¬±ØÌî£¨±£Ö¤Î¨Ò»ĞÔ£©
+			'price'		 => $array['money'],				//×Ü¶î
+			'seller_email'	 => $webdb['alipay_id'],		//Âô¼ÒÓÊÏä£¬±ØÌî
+			'logistics_fee'		=> '0.00',        			//ÎïÁ÷ÅäËÍ·ÑÓÃ
+			'logistics_payment'	=> 'BUYER_PAY',   			//ÎïÁ÷·ÑÓÃ¸¶¿î·½Ê½£ºSELLER_PAY(Âô¼ÒÖ§¸¶)¡¢BUYER_PAY(Âò¼ÒÖ§¸¶)¡¢BUYER_PAY_AFTER_RECEIVE(»õµ½¸¶¿î)
+			'logistics_type'	=> 'EXPRESS'    			//ÎïÁ÷ÅäËÍ·½Ê½£ºPOST(Æ½ÓÊ)¡¢EMS(EMS)¡¢EXPRESS(ÆäËû¿ìµİ)
 		);
+	ksort($para);
+	$and='';
 	foreach($para as $key => $value){
-		if($value){
-			$url  .= "$key=".urlencode($value)."&";
+		if($value!==''){
+			$_url  .= $and."$key=$value";
+			$url  .= $and."$key=".urlencode($value);
+			$and="&";
 		}
 	}
-	
+
+	$sign=md5($_url.$webdb['alipay_key']);
+	$url.="&sign=".$sign."&sign_type=MD5";
 	header("location:$url");
 	exit;
 }
+
+
 ?>
