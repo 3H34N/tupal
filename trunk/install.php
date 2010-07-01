@@ -1,5 +1,7 @@
 <?php
-error_reporting(7);	
+error_reporting(E_ALL);
+define('PHP168_PATH', __FILE__ ? dirname(__FILE__).'/' : './');
+if(file_exists(PHP168_PATH . 'cache/install.php')) header("Location: ./");
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
 if(!get_magic_quotes_gpc()){
@@ -27,93 +29,17 @@ function Add_S(&$array){
 	}
 }
 
-
-if(is_file("bbs/data.sql")){
-	$addPW=1;
-}
-
-//$ifPW=2;
-if($ifPW==2){
-	$addPW=0;
-	$readonly=' readonly ';
-	$readonly2=' disabled ';	
-	$readonlymsg="onclick=\"alert('当前系统版本为：php168&phpwind整合版,建议你使用默认管理员帐号.')\";";
-}
 $default_admin='admin';
 $default_weburl='http://v6.com/';
+$dbcharset = 'utf8';
 
+if($_SERVER['HTTP_CLIENT_IP']){ $onlineip=$_SERVER['HTTP_CLIENT_IP']; }
+elseif($_SERVER['HTTP_X_FORWARDED_FOR']){ $onlineip=$_SERVER['HTTP_X_FORWARDED_FOR']; }
+else{ $onlineip=$_SERVER['REMOTE_ADDR']; }
 
-define('PHP168_PATH',__FILE__ ? dirname(__FILE__).'/' : './');
-
-if($_SERVER['HTTP_CLIENT_IP']){
-     $onlineip=$_SERVER['HTTP_CLIENT_IP'];
-}elseif($_SERVER['HTTP_X_FORWARDED_FOR']){
-     $onlineip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-}else{
-     $onlineip=$_SERVER['REMOTE_ADDR'];
-}
 $onlineip = preg_replace("/^([\d\.]+).*/", "\\1", $onlineip);
 
-if(!$job&&!$action)
-{
-	require(PHP168_PATH.'install/index.htm');
-	exit;
-}
-
-elseif($action=="end_choose")
-{
-	if($ifpassport==1){
-		if($passportType=='pwbbs5'){
-			@include(PHP168_PATH."$passportPath/data/bbscache/config.php");
-			@include(PHP168_PATH."$passportPath/data/sql_config.php");
-			if(!$dbhost){
-				showmsg("路径不正确:$passportPath");
-			}
-			$_charset=getBbsCharset("{$PW}members");
-			if($_charset){
-				$charsetdb["$_charset"]=" selected ";
-				$charset_msg="系统检测出你应该选择:$_charset,$charset";
-			}
-			$passportPre=$PW;
-			
-		}elseif($passportType=='dzbbs5'){
-			@include(PHP168_PATH."$passportPath/forumdata/cache/cache_settings.php");
-			@include(PHP168_PATH."$passportPath/config.inc.php");
-			if(!$dbhost){
-				showmsg("路径不正确:$passportPath");
-			}
-			$_charset=getBbsCharset("{$tablepre}members");
-			if($_charset){
-				$charsetdb["$_charset"]=" selected ";
-				$charset_msg="系统检测出你应该选择:$_charset,$dbcharset";
-			}
-			$passportPre=$tablepre;
-
-		}elseif($passportType=='dvbbs1'){
-			define('ISDVBBS', true);
-			@include(PHP168_PATH."$passportPath/inc/config.php");
-			if(!$dbhost){
-				showmsg("路径不正确:$passportPath");
-			}
-			$_charset=getBbsCharset("{$tablepre}user");
-			if($_charset){
-				$charsetdb["$_charset"]=" selected ";
-				$charset_msg="系统检测出你应该选择:$_charset,$charset";
-			}
-			$passportPre=$dv;
-		}
-	}elseif($ifpassport==2){
-		$passportPre="pw_";
-		$dbhost='localhost';
-		$dbuser='root';
-	}else{
-		$dbhost='localhost';
-		$dbuser='root';
-	}
-	$job='addmysqlpwd';
-}
-
-elseif($action=="addmysqlpwd")
+if($action=="initdb")
 {
 	if( !$db168 || !$dbname || !$dbuser || !$dbhost )
 	{
@@ -123,7 +49,7 @@ elseif($action=="addmysqlpwd")
 	{
 		showmsg("数据表区分符必须是a-z0-9_");
 	}
-	if( !@mysql_connect($dbhost,$dbuser,$dbpw) )
+	if( !@mysql_connect($dbhost, $dbuser, $dbpw) )
 	{
 		showmsg("数据库连接失败，请确认<br><br>数据库帐号:<font color=red>{$dbuser}</font><br><br>数据库密码:<font color=red>{$dbpw}</font><br><br>是否正确,如有问题请向空间商咨询<br><br>");
 	}
@@ -174,27 +100,6 @@ elseif($action=="addmysqlpwd")
 		$msg[]=("/cache/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
 	}
 
-
-	if(	($ifPW||$addPW) && !is_writable(PHP168_PATH."bbs/data/sql_config.php")	)
-	{
-		$msg[]=("bbs/data/sql_config.php 文件不可写，请改属性为0777");
-	}
-
-	if(	($ifPW||$addPW) && !is_writable(PHP168_PATH."bbs/data/bbscache/config.php")	)
-	{
-		$msg[]=("bbs/data/bbscache/config.php 文件不可写，请改属性为0777");
-	}
-
-	if(	($ifPW||$addPW) && !is_writable(PHP168_PATH."bbs/data")	)
-	{
-		$msg[]=("bbs/data 目录不可写，请把此目录与子栏目及所有文件改属性为0777");
-	}
-
-	if(	($ifPW||$addPW) && !is_writable(PHP168_PATH."bbs/attachment")	)
-	{
-		$msg[]=("bbs/attachment 目录不可写，请把此目录与子栏目及所有文件改属性为0777");
-	}
-
 	if( is_array($msg) )
 	{
 		foreach($msg AS $value){
@@ -203,15 +108,6 @@ elseif($action=="addmysqlpwd")
 		showmsg("以下目录或文件不可写,请在ftp里修改其属性为0777,然后再刷新本页面,再进行下一步安装:<br><br><br>$show");
 	}
 	
-	//检查是否已安装过整站
-	$query=@mysql_query("select * from {$db168}members");
-	
-	if(	@mysql_num_rows($query) && $step!='continue'	)
-	{
-		$job='exist_sql';
-		require_once(PHP168_PATH.'install/make.htm');
-		exit;
-	}
 	$writefile="
 
 /**
@@ -228,19 +124,13 @@ elseif($action=="addmysqlpwd")
 \$dbcharset = '$dbcharset';		// 数据库编码,如果出现网页乱码,你可以尝试改为gbk或latin1或utf8或big5,即可解决
 
 	";
-	writeover(PHP168_PATH."php168/mysql_config.php",'<?php'.$writefile.'?>');
+	writeover(PHP168_PATH . "php168/mysql_config.php",'<?php'.$writefile.'?>');
 
 	//导入数据
-	$sql_file=PHP168_PATH."install/data.sql";
-	into_sql($sql_file);
-
-	if($ifpassport==2){
-		//导入论坛数据
-		$sql_file=PHP168_PATH."bbs/data.sql";
-		into_sql($sql_file);
+	if(!$error){
+		into_sql('');
+		$step = 'adduser';
 	}
-
-	$job='adduser';
 }
 
 
@@ -285,119 +175,14 @@ elseif($action=="adduser")
 
 	$timestamp=time();
 	
-	if($ifpassport==2)
-	{
-		$webdb['passport_type']='pwbbs5';
-		$webdb['passport_pre']="pw_";
-		$webdb['passport_path']="bbs";
-		$passportPath='bbs';
-		$admin_pwd=md5($admin_pwd);
-		
-		if($delete_all){
-			mysql_query("TRUNCATE TABLE pw_members");
-			mysql_query("TRUNCATE TABLE pw_memberdata");
-			mysql_query("TRUNCATE TABLE pw_membercredit");
-			mysql_query("TRUNCATE TABLE pw_memberinfo");
-
-			mysql_query("TRUNCATE TABLE {$db168}members");
-			mysql_query("TRUNCATE TABLE {$db168}memberdata");
-			mysql_query("TRUNCATE TABLE {$db168}memberdata_1");
-			mysql_query("INSERT INTO {$db168}memberdata (uid,username,groupid, yz,regdate,regip,lastvist) VALUES ('$rs[uid]','$admin_name','3', '1','$timestamp','$onlineip','$timestamp')");
-			
-			mysql_query("INSERT INTO pw_members (uid,username, password,email,groupid,memberid,regdate,yz) VALUES ('1','$admin_name', '$admin_pwd','$admin_email',3,8,'$timestamp',1)");
-			mysql_query("INSERT INTO pw_memberdata (uid,money) VALUES ('1','9999')");
-			mysql_query("INSERT INTO {$db168}memberdata (uid,username, groupid,money,regip,regdate, yz,lastvist,totalspace) VALUES ('1','$admin_name', '3','9999','$onlineip','$timestamp',1,'$timestamp','999999')");
-			$rs[uid]=1;
-		}
-
-		mysql_query("UPDATE {$db168}memberdata SET username='$admin_name' WHERE username='$default_admin'");
-		mysql_query("UPDATE {$passportPre}members SET username='$admin_name',password='$admin_pwd' WHERE username='$default_admin'");
-		mysql_query("UPDATE {$db168}members SET username='$admin_name',password='$admin_pwd' WHERE username='$default_admin'");
-		mysql_query("UPDATE {$db168}article SET username='$admin_name' WHERE username='$default_admin'");
-		mysql_query("UPDATE {$passportPre}threads SET author='$admin_name' WHERE author='$default_admin'");
-		
-		$query=@mysql_query("SELECT uid FROM {$passportPre}members ORDER BY uid DESC LIMIT 1 ");
-		$r3=@mysql_fetch_array($query);
-		if($r3[uid]){
-			mysql_query("DELETE FROM {$db168}memberdata WHERE uid>$r3[uid] ");
-			mysql_query("DELETE FROM {$db168}memberdata_1 WHERE uid>$r3[uid] ");
-		}
-	}
-	elseif($ifpassport==1)
-	{
-		if($passportType=="pwbbs5")
-		{
-			if(!$ifPW){
-				$query=@mysql_query("SELECT * FROM {$passportPre}members WHERE username='$admin_name' ");
-				$rs=@mysql_fetch_array($query);
-				if(!$rs){
-					showmsg("论坛中不存在此用户:$admin_name");
-				}
-				if($rs[password]!=md5($admin_pwd)){
-					showmsg("此帐号在论坛中的密码不对");
-				}
-			}
-
-			$webdb['passport_type']='pwbbs5';
-			$webdb['passport_pre']="$passportPre";
-			$webdb['passport_path']="$passportPath";
-
-		}
-		elseif($passportType=="dzbbs5")
-		{
-			@include(PHP168_PATH."$passportPath/config.inc.php");
-
-			$query=@mysql_query("SELECT * FROM {$passportPre}members WHERE username='$admin_name' ");
-			$rs=@mysql_fetch_array($query);
-			if(!$rs){
-				showmsg("论坛中不存在此用户:$admin_name");
-			}
-			if(!defined("UC_CONNECT")&&$rs[password]!=md5($admin_pwd)){
-				showmsg("此帐号在论坛中的密码不对");
-			}
-			$webdb['passport_type']='dzbbs5';
-			$webdb['passport_pre']="$passportPre";
-			$webdb['passport_path']="$passportPath";
-
-
-		}
-		elseif($passportType=="dvbbs1")
-		{
-			$webdb['passport_type']='dvbbs1';
-			$webdb['passport_pre']="$passportPre";
-			$webdb['passport_path']="$passportPath";
-		}
-		$admin_pwd=md5($admin_pwd);
-
-		if($ifPW){
-			mysql_query("UPDATE {$db168}memberdata SET username='$admin_name' WHERE username='$default_admin'");
-			mysql_query("UPDATE {$passportPre}members SET username='$admin_name',password='$admin_pwd' WHERE username='$default_admin'");
-			mysql_query("UPDATE {$db168}members SET username='$admin_name',password='$admin_pwd' WHERE username='$default_admin'");
-			mysql_query("UPDATE {$db168}article SET username='$admin_name' WHERE username='$default_admin'");
-			mysql_query("UPDATE {$passportPre}threads SET author='$admin_name' WHERE author='$default_admin'");
-		}else{
-			mysql_query("TRUNCATE TABLE {$db168}members");
-			mysql_query("TRUNCATE TABLE {$db168}memberdata");
-			mysql_query("INSERT INTO {$db168}memberdata (uid,username,groupid, yz,regdate,regip,lastvist) VALUES ('$rs[uid]','$admin_name','3', '1','$timestamp','$onlineip','$timestamp')");
-		}
-		$query=@mysql_query("SELECT uid FROM {$passportPre}members ORDER BY uid DESC LIMIT 1 ");
-		$r3=@mysql_fetch_array($query);
-		if($r3[uid]){
-			mysql_query("DELETE FROM {$db168}memberdata WHERE uid>$r3[uid] ");
-			mysql_query("DELETE FROM {$db168}memberdata_1 WHERE uid>$r3[uid] ");
-		}
-	}
-	else
-	{
-		$admin_pwd=md5($admin_pwd);
-		$webdb['passport_type']='';
-		mysql_query("TRUNCATE TABLE {$db168}members");
-		mysql_query("TRUNCATE TABLE {$db168}memberdata");
-		mysql_query("TRUNCATE TABLE {$db168}memberdata_1");
-		mysql_query("INSERT INTO {$db168}members (uid,username, password) VALUES ('1','$admin_name', '$admin_pwd')");
-		mysql_query("INSERT INTO {$db168}memberdata (uid,username, groupid,money,regip,regdate, yz,lastvist,totalspace) VALUES ('1','$admin_name', '3','9999','$onlineip','$timestamp',1,'$timestamp','999999')");
-		$rs[uid]=1;
-	}	
+	$admin_pwd=md5($admin_pwd);
+	$webdb['passport_type']='';
+	mysql_query("TRUNCATE TABLE {$db168}members");
+	mysql_query("TRUNCATE TABLE {$db168}memberdata");
+	mysql_query("TRUNCATE TABLE {$db168}memberdata_1");
+	mysql_query("INSERT INTO {$db168}members (uid,username, password) VALUES ('1','$admin_name', '$admin_pwd')");
+	mysql_query("INSERT INTO {$db168}memberdata (uid,username, groupid,money,regip,regdate, yz,lastvist,totalspace) VALUES ('1','$admin_name', '3','9999','$onlineip','$timestamp',1,'$timestamp','999999')");
+	$rs[uid]=1;
 
 	writeover(PHP168_PATH."php168/admin.php",'<?php	 '."\$admin_name='$admin_name';".' ?>');
 	
@@ -413,9 +198,7 @@ elseif($action=="adduser")
 	
 	$webdb['webmail']="$admin_email";
 
-	$webdb[mymd5]=rand(100000,99999999);
-
-
+	$webdb[mymd5] = rand(100000, 99999999);
 	
 	$writefile="<?php
 	";
@@ -451,43 +234,8 @@ elseif($action=="adduser")
 	$cache=str_replace($default_weburl,"$webdb[www_url]/",$cache);
 	writeover(PHP168_PATH."php168/friendlink.php",$cache);
 	
-	
-	if($is_del){
-		if( !is_writable(PHP168_PATH."install") ){
-			$msg[]="安装目录 install/ 属性不可写,请手工删除";
-		}
-		if( !is_writable(PHP168_PATH."install.php") ){
-			$msg[]="安装文件 install.php 属性不可写,请手工删除";
-		}
-	}
-	if(is_array($msg)){
-		foreach($msg AS $value){
-			$show.="$value<br>";
-		}
-		$show="提示:<br>$show<br>";
-	}
-
 	$job='succee';
 	
-	if($ifPW||$ifpassport==2){
-		mysql_query("UPDATE {$passportPre}config SET db_value='$webdb[passport_url]/' WHERE db_name='db_bbsurl'");
-
-		writeover(PHP168_PATH."bbs/data/bbscache/config.php","<?php \$db_bbsurl='$webdb[passport_url]/';?>",'a');
-		$show_sql="
-\$dbhost = '$dbhost';
-\$dbuser = '$dbuser';
-\$dbpw = '$dbpw';
-\$dbname = '$dbname';
-\$database = 'mysql';
-\$PW = 'pw_';
-\$charset = '$dbcharset';
-\$manager = array('$admin_name');
-\$manager_pwd = array('$admin_pwd');
-\$db_hostweb = '1';		
-		";
-		writeover(PHP168_PATH."bbs/data/sql_config.php","<?php $show_sql?>");
-	}
-
 	if(strlen($db168)!=3){
 		$query=@mysql_query("SELECT * FROM {$db168}label WHERE typesystem=1 ");
 		while($rs=@mysql_fetch_array($query)){
@@ -527,15 +275,15 @@ elseif($action=="adduser")
 		mysql_query("TRUNCATE TABLE {$db168}memberdata_1");
 		mysql_query("TRUNCATE TABLE {$db168}count_stat");
 		mysql_query("TRUNCATE TABLE {$db168}count_user");
-		deldir(PHP168_PATH."upload_files/article");
-		deldir(PHP168_PATH."upload_files/special");
+		//deldir(PHP168_PATH."upload_files/article");
+		//deldir(PHP168_PATH."upload_files/special");
 	}
 
 	if(is_writable("install")&&is_writable("install.php")){
 		require_once(PHP168_PATH.'install/make.htm');
-		deldir("install");
-		deldir("install.php");
-		deldir(PHP168_PATH."bbs/data.sql");
+		//deldir("install");
+		//deldir("install.php");
+		//deldir(PHP168_PATH."bbs/data.sql");
 	}else{
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 		echo "<CENTER>整站安装成功,请手工删除安装文件install.php与目录install/才能进入主页</CENTER>";
@@ -546,7 +294,6 @@ elseif($action=="adduser")
 
 require_once(PHP168_PATH.'install/make.htm');
 
-
 function readover($filename,$method="rb"){
 	if($handle=@fopen($filename,$method)){
 		flock($handle,LOCK_SH);
@@ -555,6 +302,7 @@ function readover($filename,$method="rb"){
 	}
 	return $filedata;
 }
+
 function writeover($filename,$data,$method="rb+",$iflock=1){
 	touch($filename);
 	$handle=fopen($filename,$method);
@@ -585,8 +333,8 @@ function write_file($filename,$data,$method="rb+",$iflock=1){
 }
 
 function into_sql($file){
-	global $dbhost,$dbuser,$dbpw,$dbname,$db168,$dbcharset;
-	mysql_connect($dbhost,$dbuser,$dbpw);
+	global $dbhost,$dbuser,$dbpw,$dbname, $db168, $dbcharset, $tbl_prefix;
+	mysql_connect($dbhost, $dbuser, $dbpw);
 	mysql_select_db($dbname);
 	if( mysql_get_server_info() < '4.1' ){
 		$dbcharset='';
@@ -595,12 +343,11 @@ function into_sql($file){
 	if( mysql_get_server_info() > '5.0' ){
 		mysql_query("SET sql_mode=''");
 	}
+	$tbl_prefix = $db168;
 	$file2=readover($file);
-	$file2=str_replace("p8_","$db168",$file2);
-	if($dbcharset){
-		//$file2=str_replace("TYPE=MyISAM"," ENGINE=MyISAM DEFAULT CHARSET=$dbcharset ",$file2);
-	}
-	$file2=explode("\n",$file2);
+	$file2 = str_replace("p8_", "$db168", $file2);
+
+	$file2=explode("\n", $file2);
 	$c1=count($file2);
 	for($j=0;$j<$c1;$j++){
 		$ck=substr($file2[$j],0,4);
@@ -609,6 +356,7 @@ function into_sql($file){
 		}
 		$arr[]=$file2[$j];
 	}
+
 	$read=implode("\n",$arr); 
 	$sql=str_replace("\r",'',$read);
 	$detail=explode(";\n",$sql);
@@ -619,7 +367,6 @@ function into_sql($file){
 		$sql=trim($sql);
 		if($sql){
 			if(eregi("CREATE TABLE",$sql)){
-				//$mysqlV=mysql_get_server_info();
 				$sql=preg_replace("/DEFAULT CHARSET=([a-z0-9]+)/is","",$sql);
 				$sql=preg_replace("/TYPE=MyISAM/is","ENGINE=MyISAM",$sql);
 				if($dbcharset){
@@ -629,11 +376,18 @@ function into_sql($file){
 					$sql=preg_replace("/ENGINE=MyISAM/is","TYPE=MyISAM",$sql);
 				}
 			}
-			mysql_query($sql);
+			
 		}
 
 	}
+
+	if( mysql_get_server_info() < '4.1' ) $tbl_setting = " TYPE=MyISAM ";
+	else $tbl_setting = " ENGINE=MyISAM DEFAULT CHARSET=utf8 ";
+	require_once(PHP168_PATH . 'install/sqldata.php');
+	mysql_query($sql_data);
+	
 }
+
 function deldir($path){
 	if (file_exists($path)){
 		if(is_file($path)){
@@ -655,23 +409,6 @@ function deldir($path){
 	}
 }
 
-function getBbsCharset($table){
-	global $dbhost,$dbuser,$dbpw,$dbname;
-	@mysql_connect($dbhost,$dbuser,$dbpw);
-	if( @mysql_get_server_info() < '4.1' ){
-		return ;
-	}
-	@mysql_select_db($dbname);
-	$query=@mysql_query("SHOW CREATE TABLE $table");
-	if(!$query){
-		return ;
-	}
-	while($rs=mysql_fetch_array($query)){
-		$table=$rs['Create Table'];
-	}
-	$table=preg_replace("/(.*)DEFAULT CHARSET=([a-z0-9]+)(.*)/is","\\2",$table);
-	return $table;
-}
 
 function showmsg($msg){
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
@@ -687,4 +424,3 @@ function strlen_lable($num,$sring){
 	}	
 	return "s:$num:\"$sring\"";
 }
-?>
