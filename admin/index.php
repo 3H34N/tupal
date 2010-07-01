@@ -87,7 +87,7 @@ elseif($iframe=='head')
 		$show.="'{$rs[name]}|index.php?lfj=center&job=map|index.php?iframe=left&Smenu=$rs[pre]&part=',";
 	}
 
-	$show=substr($show,0,-1);
+	$show=substr($show, 0, -1);
 	require_once(dirname(__FILE__)."/"."template/header.htm");
 }
 else
