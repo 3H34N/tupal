@@ -1,9 +1,4 @@
 <?php
-if(file_exists(dirname(__FILE__)."/../".'install.php')){
-	header("location:install.php");exit;
-}elseif(file_exists(dirname(__FILE__)."/../".'upgrade.php')){
-	header("location:upgrade.php");exit;
-}
 require(dirname(__FILE__)."/"."global.php");
 
 $Cache_FileName=PHP168_PATH."cache/list_cache/index.php";
