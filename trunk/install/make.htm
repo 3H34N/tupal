@@ -91,7 +91,7 @@ td{
           <tr> 
             <td height="4" align="right"><font color="#FF0000">超级管理员帐号</font>：</td>
             <td height="4"> 
-              <input type="text" name="admin_name" value="$default_admin" <?php echo $readonlymsg;?>>
+              <input type="text" name="admin_name" value="<?php echo $default_admin; ?>" <?php echo $readonlymsg;?>>
             </td>
           </tr>
           <tr> 
@@ -123,25 +123,12 @@ td{
             <td height="1">
               <input type="radio" name="delete_all" value="0" checked>
               保留（推荐） 
-              <input type="radio" name="delete_all" value="1" <?php echo $readonly2;?>>
+              <input type="radio" name="delete_all" value="1">
               清空（不推荐） </td>
-          </tr>
-          <tr style="display:none;"> 
-            <td height="1"> 
-              <div align="right"></div>
-            </td>
-            <td height="1"> 
-              <input type="radio" name="is_del" value="1" checked>
-              自动删除安装文件</td>
           </tr>
           <tr> 
             <td colspan="2" height="23"> 
-              <input type="hidden" name="dbhost" value="<?php echo $dbhost;?>">
-              <input type="hidden" name="dbuser" value="<?php echo $dbuser;?>">
-              <input type="hidden" name="dbpw" value="<?php echo $dbpw;?>">
-              <input type="hidden" name="dbname" value="<?php echo $dbname;?>">
-              <input type="hidden" name="db168" value="<?php echo $db168;?>">
-              <input type="hidden" name="dbcharset" value="utf8">
+              &nbsp;
             </td>
           </tr>
           <tr> 
@@ -157,7 +144,7 @@ td{
       <table width="100%" cellspacing="0" cellpadding="0">
         <tr> 
           <td> 
-            <div align="center"><b><font size="6" color="#FF0000">恭喜你!!PHP168整站系统安装成功!!</font></b></div>
+            <div align="center"><b><font size="6" color="#FF0000">网站程序安装成功!!</font></b></div>
           </td>
         </tr>
         <tr> 
