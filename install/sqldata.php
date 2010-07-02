@@ -1,10 +1,12 @@
 <?php
-$sql_data = <<<EOF
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}sort;
+EOF;
+$sql_tbl[] = <<<EOF
 CREATE TABLE `{$tbl_prefix}sort` (
-  `fid` mediumint(7) unsigned NOT NULL auto_increment,
-  `fup` mediumint(7) unsigned NOT NULL default '0',
-  `fmid` mediumint(5) NOT NULL default '0',
+  fid int(10) unsigned NOT NULL auto_increment,
+  `fup` int(10) unsigned NOT NULL default '0',
+  `fmid` int(10) NOT NULL default '0',
   `name` varchar(50) NOT NULL default '',
   `class` smallint(4) NOT NULL default '0',
   `sons` smallint(4) NOT NULL default '0',
@@ -36,15 +38,17 @@ CREATE TABLE `{$tbl_prefix}sort` (
   KEY `fup` (`fup`),
   KEY `fmid` (`fmid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_db;
 CREATE TABLE `{$tbl_prefix}article_db` (
   `aid` int(10) NOT NULL auto_increment,
   PRIMARY KEY  (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article;
 CREATE TABLE `{$tbl_prefix}article` (
   `aid` mediumint(7) unsigned NOT NULL auto_increment,
@@ -113,8 +117,9 @@ CREATE TABLE `{$tbl_prefix}article` (
   KEY `digg_time` (`digg_time`),
   KEY `mid` (`mid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}reply;
 CREATE TABLE `{$tbl_prefix}reply` (
   `rid` mediumint(7) NOT NULL auto_increment,
@@ -132,8 +137,9 @@ CREATE TABLE `{$tbl_prefix}reply` (
   KEY `aid` (`aid`),
   KEY `topic` (`topic`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_content_100;
 CREATE TABLE `{$tbl_prefix}article_content_100` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -147,8 +153,9 @@ CREATE TABLE `{$tbl_prefix}article_content_100` (
   KEY `uid` (`uid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_content_101;
 CREATE TABLE `{$tbl_prefix}article_content_101` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -175,8 +182,9 @@ CREATE TABLE `{$tbl_prefix}article_content_101` (
   KEY `uid` (`uid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_content_102;
 CREATE TABLE `{$tbl_prefix}article_content_102` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -198,8 +206,9 @@ CREATE TABLE `{$tbl_prefix}article_content_102` (
   KEY `uid` (`uid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_content_103;
 CREATE TABLE `{$tbl_prefix}article_content_103` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -218,8 +227,9 @@ CREATE TABLE `{$tbl_prefix}article_content_103` (
   KEY `uid` (`uid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_content_104;
 CREATE TABLE `{$tbl_prefix}article_content_104` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -234,8 +244,9 @@ CREATE TABLE `{$tbl_prefix}article_content_104` (
   KEY `uid` (`uid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_content_105;
 CREATE TABLE `{$tbl_prefix}article_content_105` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -249,8 +260,9 @@ CREATE TABLE `{$tbl_prefix}article_content_105` (
   KEY `uid` (`uid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}article_module;
 CREATE TABLE `{$tbl_prefix}article_module` (
   `id` smallint(4) NOT NULL auto_increment,
@@ -266,8 +278,9 @@ CREATE TABLE `{$tbl_prefix}article_module` (
   `iftable` mediumint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}members;
 CREATE TABLE `{$tbl_prefix}members` (
   `uid` mediumint(7) unsigned NOT NULL auto_increment,
@@ -275,8 +288,9 @@ CREATE TABLE `{$tbl_prefix}members` (
   `password` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}memberdata;
 CREATE TABLE `{$tbl_prefix}memberdata` (
   `uid` mediumint(7) unsigned NOT NULL default '0',
@@ -323,7 +337,9 @@ CREATE TABLE `{$tbl_prefix}memberdata` (
   KEY `groups` (`groups`),
   KEY `sex` (`sex`,`bday`,`cityid`)
 ) {$tbl_setting};
+EOF;
 
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}memberdata_1;
 CREATE TABLE `{$tbl_prefix}memberdata_1` (
   `uid` mediumint(7) NOT NULL default '0',
@@ -350,7 +366,9 @@ CREATE TABLE `{$tbl_prefix}memberdata_1` (
   `cpmsn` varchar(50) NOT NULL default '',
   UNIQUE KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}group;
 CREATE TABLE `{$tbl_prefix}group` (
   `gid` smallint(4) NOT NULL auto_increment,
@@ -364,7 +382,9 @@ CREATE TABLE `{$tbl_prefix}group` (
   `allowadmindb` text,
   PRIMARY KEY  (`gid`)
 ) {$tbl_setting};
+EOF;
 
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}menu;
 CREATE TABLE `{$tbl_prefix}menu` (
   `id` mediumint(5) NOT NULL auto_increment,
@@ -379,8 +399,9 @@ CREATE TABLE `{$tbl_prefix}menu` (
   `list` smallint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}admin_menu;
 CREATE TABLE `{$tbl_prefix}admin_menu` (
   `id` mediumint(5) NOT NULL auto_increment,
@@ -394,8 +415,9 @@ CREATE TABLE `{$tbl_prefix}admin_menu` (
   `iftier` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}module;
 CREATE TABLE `{$tbl_prefix}module` (
   `id` mediumint(5) NOT NULL auto_increment,
@@ -414,8 +436,9 @@ CREATE TABLE `{$tbl_prefix}module` (
   `unite_table` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}fu_article;
 CREATE TABLE `{$tbl_prefix}fu_article` (
   `fid` int(7) NOT NULL default '0',
@@ -423,8 +446,9 @@ CREATE TABLE `{$tbl_prefix}fu_article` (
   KEY `fid` (`fid`),
   KEY `aid` (`aid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}fu_sort;
 CREATE TABLE `{$tbl_prefix}fu_sort` (
   `fid` mediumint(7) unsigned NOT NULL auto_increment,
@@ -461,8 +485,9 @@ CREATE TABLE `{$tbl_prefix}fu_sort` (
   KEY `fup` (`fup`),
   KEY `fmid` (`fmid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}special;
 CREATE TABLE `{$tbl_prefix}special` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -497,8 +522,9 @@ CREATE TABLE `{$tbl_prefix}special` (
   KEY `ifbase` (`ifbase`),
   KEY `yz` (`yz`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}special_comment;
 CREATE TABLE `{$tbl_prefix}special_comment` (
   `id` mediumint(7) unsigned NOT NULL auto_increment,
@@ -515,8 +541,9 @@ CREATE TABLE `{$tbl_prefix}special_comment` (
   KEY `aid` (`cid`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}spsort;
 CREATE TABLE `{$tbl_prefix}spsort` (
   `fid` mediumint(7) unsigned NOT NULL auto_increment,
@@ -549,8 +576,9 @@ CREATE TABLE `{$tbl_prefix}spsort` (
   PRIMARY KEY  (`fid`),
   KEY `fup` (`fup`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}alonepage;
 CREATE TABLE `{$tbl_prefix}alonepage` (
   `id` mediumint(5) NOT NULL auto_increment,
@@ -573,8 +601,9 @@ CREATE TABLE `{$tbl_prefix}alonepage` (
   `ishtml` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}channel;
 CREATE TABLE `{$tbl_prefix}channel` (
   `id` smallint(4) NOT NULL auto_increment,
@@ -598,8 +627,9 @@ CREATE TABLE `{$tbl_prefix}channel` (
   `config` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}collection;
 CREATE TABLE `{$tbl_prefix}collection` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -608,8 +638,9 @@ CREATE TABLE `{$tbl_prefix}collection` (
   `posttime` int(10) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}comment;
 CREATE TABLE `{$tbl_prefix}comment` (
   `cid` mediumint(7) unsigned NOT NULL auto_increment,
@@ -632,8 +663,9 @@ CREATE TABLE `{$tbl_prefix}comment` (
   KEY `uid` (`uid`),
   KEY `ifcom` (`ifcom`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}config;
 CREATE TABLE `{$tbl_prefix}config` (
   `c_key` varchar(50) NOT NULL default '',
@@ -641,8 +673,9 @@ CREATE TABLE `{$tbl_prefix}config` (
   `c_descrip` text NOT NULL,
   PRIMARY KEY  (`c_key`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}copyfrom;
 CREATE TABLE `{$tbl_prefix}copyfrom` (
   `id` mediumint(5) NOT NULL auto_increment,
@@ -652,8 +685,9 @@ CREATE TABLE `{$tbl_prefix}copyfrom` (
   PRIMARY KEY  (`id`),
   KEY `keywords` (`name`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}hack;
 CREATE TABLE `{$tbl_prefix}hack` (
   `keywords` varchar(30) NOT NULL default '',
@@ -673,8 +707,9 @@ CREATE TABLE `{$tbl_prefix}hack` (
   `isbiz` tinyint(1) NOT NULL default '0',
   UNIQUE KEY `keywords` (`keywords`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}label;
 CREATE TABLE `{$tbl_prefix}label` (
   `lid` int(10) NOT NULL auto_increment,
@@ -700,8 +735,9 @@ CREATE TABLE `{$tbl_prefix}label` (
   KEY `ch` (`ch`,`pagetype`,`module`,`fid`,`chtype`),
   KEY `tag` (`tag`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content;
 CREATE TABLE `{$tbl_prefix}form_content` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -719,8 +755,9 @@ CREATE TABLE `{$tbl_prefix}form_content` (
   KEY `hits` (`hits`,`yz`),
   KEY `list` (`list`,`yz`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_1;
 CREATE TABLE `{$tbl_prefix}form_content_1` (
   `id` mediumint(7) unsigned NOT NULL default '0',
@@ -736,8 +773,9 @@ CREATE TABLE `{$tbl_prefix}form_content_1` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_2;
 CREATE TABLE `{$tbl_prefix}form_content_2` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -753,8 +791,9 @@ CREATE TABLE `{$tbl_prefix}form_content_2` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_3;
 CREATE TABLE `{$tbl_prefix}form_content_3` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -767,8 +806,9 @@ CREATE TABLE `{$tbl_prefix}form_content_3` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_4;
 CREATE TABLE `{$tbl_prefix}form_content_4` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -782,8 +822,9 @@ CREATE TABLE `{$tbl_prefix}form_content_4` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_5;
 CREATE TABLE `{$tbl_prefix}form_content_5` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -807,8 +848,9 @@ CREATE TABLE `{$tbl_prefix}form_content_5` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_6;
 CREATE TABLE `{$tbl_prefix}form_content_6` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -832,8 +874,9 @@ CREATE TABLE `{$tbl_prefix}form_content_6` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_7;
 CREATE TABLE `{$tbl_prefix}form_content_7` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -852,8 +895,9 @@ CREATE TABLE `{$tbl_prefix}form_content_7` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_content_8;
 CREATE TABLE `{$tbl_prefix}form_content_8` (
   `id` mediumint(7) NOT NULL auto_increment,
@@ -867,8 +911,9 @@ CREATE TABLE `{$tbl_prefix}form_content_8` (
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 DROP TABLE IF EXISTS {$tbl_prefix}form_module;
 CREATE TABLE `{$tbl_prefix}form_module` (
   `id` smallint(4) NOT NULL auto_increment,
@@ -1561,8 +1606,9 @@ CREATE TABLE `{$tbl_prefix}exam_title` (
   `ifshare` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`)
 ) {$tbl_setting};
+EOF;
 
-
+$sql_tbl[] = <<<EOF
 INSERT INTO `{$tbl_prefix}sort` VALUES ('1','0','0','新闻中心','1','9','1','','0','0','','','','','a:3:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";}','','0','','','1','','','','','0','a:11:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";N;s:12:\"ListShowType\";N;s:14:\"label_bencandy\";s:0:\"\";s:10:\"channelDir\";s:4:\"nnew\";s:13:\"channelDomain\";s:0:\"\";s:10:\"label_list\";s:1:\"0\";s:15:\"ListShowBigType\";s:13:\"bigsort_tpl/0\";}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('3','1','0','社会新闻','2','0','0','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:8:{s:11:\"sonTitleRow\";N;s:12:\"sonTitleLeng\";N;s:9:\"cachetime\";N;s:12:\"sonListorder\";N;s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:10:\"list_tpl/6\";s:15:\"ListShowBigType\";N;s:10:\"label_list\";s:0:\"\";}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('4','1','0','IT业界','2','0','0','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','31','','','1','3','','','','0','a:7:{s:11:\"sonTitleRow\";N;s:12:\"sonTitleLeng\";N;s:9:\"cachetime\";N;s:12:\"sonListorder\";N;s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:11:\"list_tpl/10\";s:15:\"ListShowBigType\";N;}','','','','');
@@ -1572,9 +1618,15 @@ INSERT INTO `{$tbl_prefix}sort` VALUES ('9','0','100','图片中心','1','1','1'
 INSERT INTO `{$tbl_prefix}sort` VALUES ('10','9','100','美女欣赏','2','0','0','','0','0','','','22','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','11','','1','8','','','','0','a:7:{s:11:\"sonTitleRow\";N;s:12:\"sonTitleLeng\";N;s:9:\"cachetime\";N;s:12:\"sonListorder\";N;s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";s:15:\"ListShowBigType\";N;}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('11','0','101','下载中心','1','3','1','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:8:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";s:15:\"ListShowBigType\";s:1:\"0\";s:10:\"label_list\";s:0:\"\";}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('12','11','101','建站软件','2','0','0','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:6:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";}','','','','');
+EOF;
+
+$sql_tbl[] = <<<EOF
 INSERT INTO `{$tbl_prefix}sort` VALUES ('13','0','102','影视频道','1','1','1','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:6:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('14','13','102','网友视频','2','0','0','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:8:{s:11:\"sonTitleRow\";N;s:12:\"sonTitleLeng\";N;s:9:\"cachetime\";N;s:12:\"sonListorder\";N;s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";s:14:\"label_bencandy\";s:0:\"\";s:15:\"ListShowBigType\";N;}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('15','0','103','商城频道','1','1','1','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:6:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";}','','','','');
+EOF;
+
+$sql_tbl[] = <<<EOF
 INSERT INTO `{$tbl_prefix}sort` VALUES ('16','15','103','数码产品','2','0','0','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','','','','','0','a:6:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('17','0','104','FLASH频道','1','1','1','','0','0','','','','','a:3:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";}','','0','','','1','','','','','0','a:8:{s:11:\"sonTitleRow\";s:0:\"\";s:12:\"sonTitleLeng\";s:0:\"\";s:9:\"cachetime\";s:0:\"\";s:12:\"sonListorder\";s:1:\"0\";s:14:\"listContentNum\";N;s:12:\"ListShowType\";N;s:15:\"ListShowBigType\";s:1:\"0\";s:10:\"label_list\";s:0:\"\";}','','','','');
 INSERT INTO `{$tbl_prefix}sort` VALUES ('18','17','104','MTV类','2','0','0','','0','0','','','','','a:4:{s:4:\"head\";s:0:\"\";s:4:\"foot\";s:0:\"\";s:4:\"list\";s:0:\"\";s:8:\"bencandy\";s:0:\"\";}','','0','','','1','3','','','','0','a:8:{s:11:\"sonTitleRow\";N;s:12:\"sonTitleLeng\";N;s:9:\"cachetime\";N;s:12:\"sonListorder\";N;s:14:\"listContentNum\";s:0:\"\";s:12:\"ListShowType\";s:1:\"0\";s:15:\"ListShowBigType\";N;s:10:\"label_list\";s:0:\"\";}','','','','');
@@ -1848,7 +1900,10 @@ INSERT INTO `{$tbl_prefix}article_content_104` VALUES ('9','529','507','18','1',
 INSERT INTO `{$tbl_prefix}article_content_104` VALUES ('10','530','508','18','1','http://down2.php168.com/other/testv6/7k7k_qiufy.swf@@@swf','');
 INSERT INTO `{$tbl_prefix}article_content_105` VALUES ('2','544','522','30','1','M11504 BXF');
 INSERT INTO `{$tbl_prefix}article_module` VALUES ('100','图片模型','图片','0','','','','a:3:{s:8:\"field_db\";a:1:{s:8:\"photourl\";a:13:{s:5:\"title\";s:12:\"图片地址\";s:10:\"field_name\";s:8:\"photourl\";s:10:\"field_type\";s:10:\"mediumtext\";s:10:\"field_leng\";i:0;s:9:\"form_type\";s:9:\"upmorepic\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";i:0;s:9:\"allowview\";N;}}s:7:\"is_html\";a:0:{}s:9:\"moduleSet\";a:11:{s:5:\"alias\";s:6:\"图片\";s:10:\"title_name\";s:12:\"图片名称\";s:12:\"content_name\";s:6:\"介绍\";s:6:\"edit_w\";s:3:\"500\";s:6:\"edit_h\";s:3:\"200\";s:11:\"description\";s:1:\"1\";s:5:\"etype\";s:1:\"1\";s:8:\"morepage\";s:1:\"1\";s:9:\"no_author\";s:1:\"1\";s:7:\"no_from\";s:1:\"1\";s:10:\"no_fromurl\";s:1:\"1\";}}','photo','0','0');
+
 INSERT INTO `{$tbl_prefix}article_module` VALUES ('101','下载模型','软件','0','','','','a:3:{s:8:\"field_db\";a:8:{s:9:\"my_author\";a:13:{s:5:\"title\";s:12:\"软件作者\";s:10:\"field_name\";s:9:\"my_author\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:30;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"10\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"8\";s:9:\"allowview\";N;}s:14:\"my_copyfromurl\";a:14:{s:5:\"title\";s:12:\"厂商主页\";s:10:\"field_name\";s:14:\"my_copyfromurl\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:150;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"50\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"7\";s:9:\"allowview\";N;}s:7:\"my_demo\";a:14:{s:5:\"title\";s:12:\"演示网址\";s:10:\"field_name\";s:7:\"my_demo\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:150;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"50\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"6\";s:9:\"allowview\";N;}s:15:\"operatingsystem\";a:14:{s:5:\"title\";s:12:\"运行环境\";s:10:\"field_name\";s:15:\"operatingsystem\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:150;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"60\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:907:\"<br>平台选择：<a href=\\\"javascript:ToSystem(\\\'Linux\\\')\\\">Linux</a>/<a href=\\\"javascript:ToSystem(\\\'DOS\\\')\\\">DOS</a>/<a href=\\\"javascript:ToSystem(\\\'9x\\\')\\\">9x</a>/<a href=\\\"javascript:ToSystem(\\\'NT\\\')\\\">NT</a>/<a href=\\\"javascript:ToSystem(\\\'2000\\\')\\\">2000</a>/<a href=\\\"javascript:ToSystem(\\\'2003\\\')\\\">2003</a>/<a href=\\\"javascript:ToSystem(\\\'XP\\\')\\\">XP</a>/<a href=\\\"javascript:ToSystem(\\\'.NET\\\')\\\">.NET</a>/<a href=\\\"javascript:ToSystem(\\\'ASP\\\')\\\">ASP</a>/<a href=\\\"javascript:ToSystem(\\\'PHP\\\')\\\">PHP</a>/<a href=\\\"javascript:ToSystem(\\\'JSP\\\')\\\">JSP</a>/<a href=\\\"javascript:ToSystem(\\\'CGI\\\')\\\">CGI</a>\r\n\r\n<SCRIPT LANGUAGE=\\\"JavaScript\\\">\r\nfunction ToSystem(va){\r\n	cc=document.getElementById(\\\"atc_operatingsystem\\\").value\r\n	if(cc==\\\'\\\'){\r\n		document.getElementById(\\\"atc_operatingsystem\\\").value=va;\r\n	}else{\r\n		document.getElementById(\\\"atc_operatingsystem\\\").value+=\\\"/\\\"+va;\r\n	}\r\n	\r\n}\r\n</SCRIPT>\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"5\";s:9:\"allowview\";N;}s:12:\"softlanguage\";a:14:{s:5:\"title\";s:12:\"软件语言\";s:10:\"field_name\";s:12:\"softlanguage\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:30;s:9:\"form_type\";s:6:\"select\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:48:\"简体中文\r\n繁体中文\r\n英文\r\n其他语言\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"4\";s:9:\"allowview\";N;}s:9:\"copyright\";a:13:{s:5:\"title\";s:12:\"授权形式\";s:10:\"field_name\";s:9:\"copyright\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:30;s:9:\"form_type\";s:6:\"select\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:42:\"免费版\r\n试用版\r\n破解版\r\n商业版\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"3\";s:9:\"allowview\";N;}s:8:\"softsize\";a:14:{s:5:\"title\";s:12:\"文件大小\";s:10:\"field_name\";s:8:\"softsize\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:20;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:1:\"M\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"2\";s:9:\"allowview\";N;}s:7:\"softurl\";a:14:{s:5:\"title\";s:12:\"软件地址\";s:10:\"field_name\";s:7:\"softurl\";s:10:\"field_type\";s:10:\"mediumtext\";s:10:\"field_leng\";i:0;s:9:\"form_type\";s:10:\"upmorefile\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"1\";s:9:\"allowview\";N;}}s:7:\"is_html\";a:0:{}s:9:\"moduleSet\";a:11:{s:5:\"alias\";s:6:\"软件\";s:10:\"title_name\";s:12:\"软件名称\";s:12:\"content_name\";s:12:\"软件介绍\";s:6:\"edit_w\";s:3:\"600\";s:6:\"edit_h\";s:3:\"300\";s:11:\"description\";s:1:\"1\";s:5:\"etype\";s:1:\"1\";s:8:\"morepage\";s:1:\"1\";s:9:\"no_author\";s:1:\"1\";s:7:\"no_from\";s:1:\"1\";s:10:\"no_fromurl\";s:1:\"1\";}}','download','0','0');
+
+
 INSERT INTO `{$tbl_prefix}article_module` VALUES ('102','视频模型','视频','0','','','','a:3:{s:8:\"field_db\";a:3:{s:5:\"mvurl\";a:14:{s:5:\"title\";s:12:\"视频地址\";s:10:\"field_name\";s:5:\"mvurl\";s:10:\"field_type\";s:10:\"mediumtext\";s:10:\"field_leng\";i:0;s:9:\"form_type\";s:8:\"upmoremv\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"3\";s:9:\"allowview\";N;}s:7:\"my_role\";a:14:{s:5:\"title\";s:12:\"领衔主演\";s:10:\"field_name\";s:7:\"my_role\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:100;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"20\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"2\";s:9:\"allowview\";N;}s:7:\"my_lang\";a:14:{s:5:\"title\";s:6:\"语言\";s:10:\"field_name\";s:7:\"my_lang\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:20;s:9:\"form_type\";s:6:\"select\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:36:\"国语\r\n粤语\r\n英语\r\n其它语言\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"1\";s:9:\"allowview\";N;}}s:7:\"is_html\";a:0:{}s:9:\"moduleSet\";a:11:{s:5:\"alias\";s:6:\"视频\";s:10:\"title_name\";s:12:\"视频名称\";s:12:\"content_name\";s:12:\"视频介绍\";s:6:\"edit_w\";s:3:\"500\";s:6:\"edit_h\";s:3:\"300\";s:11:\"description\";s:1:\"1\";s:5:\"etype\";s:1:\"1\";s:8:\"morepage\";s:1:\"1\";s:9:\"no_author\";s:1:\"1\";s:7:\"no_from\";s:1:\"1\";s:10:\"no_fromurl\";s:1:\"1\";}}','mv','0','0');
 INSERT INTO `{$tbl_prefix}article_module` VALUES ('103','商城模型','商品','0','','','','a:3:{s:8:\"field_db\";a:6:{s:7:\"shopnum\";a:14:{s:5:\"title\";s:9:\"库存量\";s:10:\"field_name\";s:7:\"shopnum\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:5;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:1:\"8\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:6:\"不限\";s:10:\"form_units\";s:3:\"个\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"0\";s:9:\"allowview\";N;}s:8:\"nowprice\";a:14:{s:5:\"title\";s:12:\"现售价格\";s:10:\"field_name\";s:8:\"nowprice\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:20;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"15\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:3:\"元\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"0\";s:9:\"allowview\";N;}s:9:\"martprice\";a:14:{s:5:\"title\";s:12:\"市面价格\";s:10:\"field_name\";s:9:\"martprice\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:15;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"15\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:3:\"元\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"0\";s:9:\"allowview\";N;}s:9:\"shopmoney\";a:14:{s:5:\"title\";s:12:\"积分点数\";s:10:\"field_name\";s:9:\"shopmoney\";s:10:\"field_type\";s:3:\"int\";s:10:\"field_leng\";i:7;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:1:\"7\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:3:\"点\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"0\";s:9:\"allowview\";N;}s:8:\"shoptype\";a:13:{s:5:\"title\";s:12:\"商品型号\";s:10:\"field_name\";s:8:\"shoptype\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:50;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"15\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"0\";s:9:\"allowview\";N;}s:7:\"shop_id\";a:14:{s:5:\"title\";s:12:\"商品编号\";s:10:\"field_name\";s:7:\"shop_id\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:30;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"15\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"0\";s:9:\"allowview\";N;}}s:7:\"is_html\";a:0:{}s:9:\"moduleSet\";a:11:{s:5:\"alias\";s:6:\"商品\";s:10:\"title_name\";s:12:\"商品名称\";s:12:\"content_name\";s:12:\"商品介绍\";s:6:\"edit_w\";s:3:\"600\";s:6:\"edit_h\";s:3:\"300\";s:11:\"description\";s:1:\"1\";s:5:\"etype\";s:1:\"0\";s:8:\"morepage\";s:1:\"1\";s:9:\"no_author\";s:1:\"1\";s:7:\"no_from\";s:1:\"1\";s:10:\"no_fromurl\";s:1:\"1\";}}','shop','0','0');
 INSERT INTO `{$tbl_prefix}article_module` VALUES ('104','FLASH模型','FLASH','0','','','','a:3:{s:8:\"field_db\";a:2:{s:11:\"flashauthor\";a:14:{s:5:\"title\";s:11:\"FLASH作者\";s:10:\"field_name\";s:11:\"flashauthor\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:20;s:9:\"form_type\";s:4:\"text\";s:15:\"field_inputleng\";s:2:\"12\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:8:\"mustfill\";s:1:\"0\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"2\";s:9:\"allowview\";N;}s:8:\"flashurl\";a:13:{s:5:\"title\";s:11:\"FLASH地址\";s:10:\"field_name\";s:8:\"flashurl\";s:10:\"field_type\";s:7:\"varchar\";s:10:\"field_leng\";i:150;s:9:\"form_type\";s:6:\"upplay\";s:15:\"field_inputleng\";s:0:\"\";s:8:\"form_set\";s:0:\"\";s:10:\"form_value\";s:0:\"\";s:10:\"form_units\";s:0:\"\";s:10:\"form_title\";s:0:\"\";s:6:\"search\";s:1:\"0\";s:9:\"orderlist\";s:1:\"1\";s:9:\"allowview\";N;}}s:7:\"is_html\";a:0:{}s:9:\"moduleSet\";a:11:{s:5:\"alias\";s:5:\"FLASH\";s:10:\"title_name\";s:11:\"FLASH名称\";s:12:\"content_name\";s:11:\"FLASH介绍\";s:6:\"edit_w\";s:3:\"500\";s:6:\"edit_h\";s:3:\"300\";s:11:\"description\";s:1:\"1\";s:5:\"etype\";s:1:\"1\";s:8:\"morepage\";s:1:\"1\";s:9:\"no_author\";s:1:\"1\";s:7:\"no_from\";s:1:\"1\";s:10:\"no_fromurl\";s:1:\"1\";}}','flash','0','0');
@@ -7834,4 +7889,5 @@ INSERT INTO `{$tbl_prefix}exam_title` VALUES ('21','5','7','www.ceodh.com-------
 INSERT INTO `{$tbl_prefix}exam_title` VALUES ('22','5','9','PHP168曾经承诺协助站长向商务转型，让站长做有意义、能盈利的站，请你提出哪些商务功能需要完善----以配合站长的网站运营。','','','1','admin','1');
 INSERT INTO `{$tbl_prefix}exam_title` VALUES ('23','5','2','PHP168所有方案的代理体系适合那些人群？在哪个版块可以申请？','企业\r\n个人用户\r\n合作伙伴\r\n代理与商务区\r\nV6专区','企业\r\n个人用户\r\n合作伙伴\r\n代理与商务区','1','admin','1');
 EOF;
+
 
