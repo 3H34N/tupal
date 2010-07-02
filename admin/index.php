@@ -99,4 +99,3 @@ else
 	
 	require(dirname(__FILE__)."/"."$lfj.php");
 }
-?>
