@@ -322,7 +322,6 @@ elseif($job=="module"&&$Apower[center_config])
 elseif($job=="map")
 {
 	$systemMsg=systemMsg();
-	$OfficialNotice=read_file(PHP168_PATH."cache/OfficialNotice.php");
 	
 	@extract($db->get_one("SELECT COUNT(aid) AS Article FROM {$pre}article_db"));
 	@extract($db->get_one("SELECT COUNT(cid) AS Comment FROM {$pre}comment"));
