@@ -324,7 +324,6 @@ CREATE TABLE `{$tbl_prefix}memberdata` (
   KEY `sex` (`sex`,`bday`,`cityid`)
 ) {$tbl_setting};
 
-
 DROP TABLE IF EXISTS {$tbl_prefix}memberdata_1;
 CREATE TABLE `{$tbl_prefix}memberdata_1` (
   `uid` mediumint(7) NOT NULL default '0',
@@ -352,7 +351,6 @@ CREATE TABLE `{$tbl_prefix}memberdata_1` (
   UNIQUE KEY `uid` (`uid`)
 ) {$tbl_setting};
 
-
 DROP TABLE IF EXISTS {$tbl_prefix}group;
 CREATE TABLE `{$tbl_prefix}group` (
   `gid` smallint(4) NOT NULL auto_increment,
@@ -366,7 +364,6 @@ CREATE TABLE `{$tbl_prefix}group` (
   `allowadmindb` text,
   PRIMARY KEY  (`gid`)
 ) {$tbl_setting};
-
 
 DROP TABLE IF EXISTS {$tbl_prefix}menu;
 CREATE TABLE `{$tbl_prefix}menu` (
