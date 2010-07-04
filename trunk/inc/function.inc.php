@@ -293,7 +293,6 @@ function get_word($string, $length = 80,$more=1 , $etc = '..')
 	$strLength = 0;
 	$width  = 0;
 	if(strlen($string) > $length) {
-		//将$length换算成实际UTF8格式编码下字符串的长度
 		for($i = 0; $i < $length; $i++) {
 			if ( $strLength >= strlen($string) ){
 				break;
@@ -301,10 +300,9 @@ function get_word($string, $length = 80,$more=1 , $etc = '..')
 			if ( $width>=$length){
 				break;
 			}
-			//当检测到一个中文字符时
 			if( ord($string[$strLength]) > 127 ){
 				$strLength += 3;
-				$width     += 2;              //大概按一个汉字宽度相当于两个英文字符的宽度
+				$width     += 2;
 			}else{
 				$strLength += 1;
 				$width     += 1;
