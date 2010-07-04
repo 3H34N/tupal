@@ -1,10 +1,10 @@
 <?php
 require(dirname(__FILE__)."/"."../inc/common.inc.php");	//核心文件
-require(PHP168_PATH."inc/artic_function.php");			//包含一些调取文件内容的函数
+require(PHP168_PATH . "inc/artic_function.php");			//包含一些调取文件内容的函数
 
-@include_once(PHP168_PATH."php168/ad_cache.php");		//广告变量缓存文件
-@include_once(PHP168_PATH."php168/label_hf.php");		//标签头部与底部变量缓存文件
-@include_once(PHP168_PATH."php168/all_fid.php");		//全部栏目配置文件
+@include_once(PHP168_PATH . "php168/ad_cache.php");		//广告变量缓存文件
+@include_once(PHP168_PATH . "php168/label_hf.php");		//标签头部与底部变量缓存文件
+@include_once(PHP168_PATH . "php168/all_fid.php");		//全部栏目配置文件
 
 if(!$webdb[web_open])
 {
@@ -16,7 +16,6 @@ if(!$webdb[web_open])
 *允许哪些IP访问
 **/
 $IS_BIZ && Limt_IP('AllowVisitIp');
-
 
 $ch=intval($ch);
 $fid=intval($fid);
@@ -517,4 +516,3 @@ function get_guide_in($fid){
 	}
 	return $show;
 }
-?>
