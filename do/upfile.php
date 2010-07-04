@@ -1,5 +1,5 @@
 <?php
-require_once (dirname(__FILE__)."/".'global.php');
+require_once (dirname(__FILE__) . "/" . 'global.php');
 if(!$lfjid){
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		 <body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0">';
