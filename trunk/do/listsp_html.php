@@ -116,4 +116,3 @@ function ListThisSp($rows,$leng=50){
 	$listdb=list_special($SQL,$which,$leng);
 	return $listdb;
 }
-?>
