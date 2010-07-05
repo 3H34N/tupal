@@ -448,4 +448,3 @@ function get_out_pic($str,$getpic=1){
 	return $str;
 }
 
-?>
