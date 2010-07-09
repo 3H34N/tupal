@@ -43,7 +43,7 @@ else{ $onlineip=$_SERVER['REMOTE_ADDR']; }
 
 $onlineip = preg_replace("/^([\d\.]+).*/", "\\1", $onlineip);
 
-if($action=="initdb"){
+if($action=="initdb" || '' == $action){
 	$step = '';
 	if( '' == $dbname || '' == $dbuser || '' == $dbhost ){
 		$error = true;
@@ -122,6 +122,8 @@ if($action=="initdb"){
 \$database = 'mysql';		// 数据库类型(一般不必改)
 \$pconnect = 0;				// 数据库是否持久连接(一般不必改)
 \$dbcharset = '$dbcharset';		// 数据库编码,手动更改可能会出现乱码
+\$dbinstall = true;
+\$dbversion = 15;
 ";
 
 	//导入数据
@@ -319,7 +321,7 @@ function write_file($filename,$data,$method="rb+",$iflock=1){
 }
 
 function into_sql($file){
-	global $dbhost,$dbuser,$dbpw,$dbname, $db168, $dbcharset, $tbl_prefix;
+	global $dbhost,$dbuser,$dbpw,$dbname, $db168, $dbcharset, $tbl_prefix, $sql_drop_tbls, $sql_tbl, $sql_data;
 	$dblink = mysql_connect($dbhost, $dbuser, $dbpw);
 	mysql_select_db($dbname, $dblink);
 	if( mysql_get_server_info() < '4.1' ){
@@ -333,17 +335,25 @@ function into_sql($file){
 
 	if( mysql_get_server_info() < '4.1' ) $tbl_setting = " TYPE=MyISAM ";
 	else $tbl_setting = " ENGINE =  MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci ";
-	require_once(PHP168_PATH . 'install/sqldata.php');
-	//echo $sql_data;exit;
-	foreach($sql_data as $sql){
-		if(!mysql_query($sql, $dblink)) {
-			//echo $sql;
-			echo mysql_error($dblink);
-			exit;
+	require_once(PHP168_PATH . 'install/sql_tbl.php');
+	require_once(PHP168_PATH . 'install/sql_data.php');
+	
+	foreach($sql_drop_tbls as $sql_drop_tbl){
+		if(!mysql_query("DROP TABLE IF EXISTS {$tbl_prefix}{$sql_drop_tbl}", $dblink)) {
+			echo "DROP TABLE IF EXISTS {$tbl_prefix}{$sql_drop_tbl}<br />\n";
+			echo "drop tbl1: " . mysql_error($dblink); exit;
 		}
 	}
-	exit;
-	
+	foreach($sql_tbl as $sql){
+		if(!mysql_query($sql, $dblink)) {
+			echo "drop tbl2: $sql" . mysql_error($dblink); exit;
+		}
+	}
+	foreach($sql_data as $sql){
+		if(!mysql_query($sql, $dblink)) {
+			echo "drop tbl3: " . mysql_error($dblink); exit;
+		}
+	}
 }
 
 function deldir($path){
