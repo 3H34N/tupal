@@ -336,21 +336,22 @@ function into_sql($file){
 	if( mysql_get_server_info() < '4.1' ) $tbl_setting = " TYPE=MyISAM ";
 	else $tbl_setting = " ENGINE =  MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci ";
 	require_once(PHP168_PATH . 'install/sql_tbl.php');
-	require_once(PHP168_PATH . 'install/sql_data.php');
+	//require_once(PHP168_PATH . 'install/sql_data.php');
 	
 	foreach($sql_drop_tbls as $sql_drop_tbl){
 		if(!mysql_query("DROP TABLE IF EXISTS {$tbl_prefix}{$sql_drop_tbl}", $dblink)) {
-			echo "DROP TABLE IF EXISTS {$tbl_prefix}{$sql_drop_tbl}<br />\n";
-			echo "drop tbl1: " . mysql_error($dblink); exit;
+			echo mysql_error($dblink); exit;
 		}
 	}
 	foreach($sql_tbl as $sql){
 		if(!mysql_query($sql, $dblink)) {
-			echo "drop tbl2: $sql" . mysql_error($dblink); exit;
+			echo mysql_error($dblink); exit;
 		}
 	}
-	foreach($sql_data as $sql){
-		if(!mysql_query($sql, $dblink)) {
+	$sql_lines = file(PHP168_PATH . 'install/sql_data.php', FILE_SKIP_EMPTY_LINES);
+	foreach($sql_lines as $sql_line){
+		$sql_line = str_replace('{tbl_prefix}', $tbl_prefix, $sql_line);
+		if(!mysql_query($sql_line, $dblink)) {
 			echo "drop tbl3: " . mysql_error($dblink); exit;
 		}
 	}
