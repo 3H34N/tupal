@@ -178,17 +178,16 @@ elseif($action=="adduser"){
 		$timestamp=time();
 		
 		$admin_pwd=md5($admin_pwd);
-		$webdb['passport_type']='';
-		mysql_query("TRUNCATE TABLE {$db168}members");
-		mysql_query("TRUNCATE TABLE {$db168}memberdata");
-		mysql_query("TRUNCATE TABLE {$db168}memberdata_1");
-		mysql_query("INSERT INTO {$db168}members (uid,username, password) VALUES ('1','$admin_name', '$admin_pwd')");
-		mysql_query("INSERT INTO {$db168}memberdata (uid,username, groupid,money,regip,regdate, yz,lastvist,totalspace) VALUES ('1','$admin_name', '3','9999','$onlineip','$timestamp',1,'$timestamp','999999')");
-		$rs[uid]=1;
+		mysql_query("TRUNCATE TABLE {$tbl_prefix}members");
+		mysql_query("TRUNCATE TABLE {$tbl_prefix}memberdata");
+		mysql_query("TRUNCATE TABLE {$tbl_prefix}memberdata_1");
+		mysql_query("INSERT INTO {$tbl_prefix}members (uid,username, password) VALUES ('1','$admin_name', '$admin_pwd')");
+		mysql_query("INSERT INTO {$tbl_prefix}memberdata (uid,username, groupid,money,regip,regdate, yz,lastvist,totalspace) VALUES ('1','$admin_name', '3','9999','$onlineip','$timestamp',1,'$timestamp','999999')");
+		$rs['uid']=1;
 
 		writeover(PHP168_PATH."php168/admin.php",'<?php	 '."\$admin_name='$admin_name';".' ?>');
 		
-		mysql_query("TRUNCATE TABLE {$db168}config");
+		mysql_query("TRUNCATE TABLE {$tbl_prefix}config");
 
 		$PHP_SELF_TEMP=$_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
 		$PHP_SELF=$_SERVER['REQUEST_URI']?$_SERVER['REQUEST_URI']:$PHP_SELF_TEMP;
@@ -213,7 +212,7 @@ elseif($action=="adduser"){
 		}
 		$SQL=$SQL.";";
 		$SQL=str_Replace("'),;","')",$SQL);
-		mysql_query(" INSERT INTO `{$db168}config` VALUES  $SQL ");
+		mysql_query(" INSERT INTO `{$tbl_prefix}config` VALUES  $SQL ");
 
 		writeover(PHP168_PATH."php168/config.php",$writefile);
 		@unlink(PHP168_PATH."cache/MysqlTime.txt");
@@ -239,40 +238,40 @@ elseif($action=="adduser"){
 			while($rs=@mysql_fetch_array($query)){
 				$rs[code]=preg_replace("/s:([\d]+):\"([^\"]+)\"/eis","strlen_lable('\\1','\\2')",$rs[code]);
 				$rs[code]=addslashes($rs[code]);
-				@mysql_query("UPDATE {$db168}label SET code='$rs[code]' WHERE lid='$rs[lid]' ");
+				@mysql_query("UPDATE {$tbl_prefix}label SET code='$rs[code]' WHERE lid='$rs[lid]' ");
 			}
 		}
 		
 		if($delete_all){
-			mysql_query("TRUNCATE TABLE {$db168}article");
-			mysql_query("TRUNCATE TABLE {$db168}article_content_100");
-			mysql_query("TRUNCATE TABLE {$db168}article_content_101");
-			mysql_query("TRUNCATE TABLE {$db168}article_content_102");
-			mysql_query("TRUNCATE TABLE {$db168}article_content_103");
-			mysql_query("TRUNCATE TABLE {$db168}article_content_104");
-			mysql_query("TRUNCATE TABLE {$db168}article_content_105");
-			mysql_query("TRUNCATE TABLE {$db168}reply");
-			mysql_query("TRUNCATE TABLE {$db168}keyword");
-			mysql_query("TRUNCATE TABLE {$db168}keywordid");
-			mysql_query("TRUNCATE TABLE {$db168}special");
-			mysql_query("TRUNCATE TABLE {$db168}spsort");
-			mysql_query("TRUNCATE TABLE {$db168}special_comment");
-			mysql_query("TRUNCATE TABLE {$db168}comment");
-			mysql_query("TRUNCATE TABLE {$db168}guestbook");
-			mysql_query("TRUNCATE TABLE {$db168}pm");
-			mysql_query("TRUNCATE TABLE {$db168}sellad_user");
-			mysql_query("TRUNCATE TABLE {$db168}upfile");
-			mysql_query("TRUNCATE TABLE {$db168}vote_comment");
-			mysql_query("TRUNCATE TABLE {$db168}shoporderuser");
-			mysql_query("TRUNCATE TABLE {$db168}shoporderproduct");
-			mysql_query("TRUNCATE TABLE {$db168}shopolpay");
-			mysql_query("TRUNCATE TABLE {$db168}report");
-			mysql_query("TRUNCATE TABLE {$db168}propagandize");
-			mysql_query("TRUNCATE TABLE {$db168}olpay");
-			mysql_query("TRUNCATE TABLE {$db168}moneycard");
-			mysql_query("TRUNCATE TABLE {$db168}memberdata_1");
-			mysql_query("TRUNCATE TABLE {$db168}count_stat");
-			mysql_query("TRUNCATE TABLE {$db168}count_user");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article_content_100");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article_content_101");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article_content_102");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article_content_103");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article_content_104");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}article_content_105");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}reply");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}keyword");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}keywordid");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}special");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}spsort");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}special_comment");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}comment");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}guestbook");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}pm");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}sellad_user");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}upfile");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}vote_comment");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}shoporderuser");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}shoporderproduct");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}shopolpay");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}report");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}propagandize");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}olpay");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}moneycard");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}memberdata_1");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}count_stat");
+			mysql_query("TRUNCATE TABLE {$tbl_prefix}count_user");
 			deldir(PHP168_PATH."upload_files/article");
 			deldir(PHP168_PATH."upload_files/special");
 		}

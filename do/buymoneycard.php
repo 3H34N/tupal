@@ -1,6 +1,6 @@
 <?php
 require("global.php");
-
+error_reporting(E_ALL);
 if(in_array($banktype,array('alipay','tenpay','99pay','yeepay'))){
 	include(PHP168_PATH."inc/olpay/{$banktype}.php");
 }elseif($banktype){
@@ -25,7 +25,7 @@ function olpay_send(){
 	$array[content]="为帐号:$lfjid,在线付款购买金币";
 	$array[numcode]=strtolower(rands(10));
 
-	$db->query("INSERT INTO {$pre}olpay (`numcode` , `money` , `posttime` , `uid` , `username`, `banktype`, `paytype` ) VALUES ('$array[numcode]','$array[money]','$timestamp','$lfjuid','$lfjid','$banktype','1')");
+	$db->query("INSERT INTO {$pre}olpay (`numcode` , `money` , `posttime` , `uid` , `username`, `banktype`, `paytype` ) VALUES ('$array[numcode]','{$array[money]}','{$timestamp}','$lfjuid','$lfjid','$banktype','1')");
 
 	return $array;
 }
