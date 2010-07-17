@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 error_reporting(0);
 define('PHP168_PATH', __FILE__ ? dirname(__FILE__).'/' : './');
 if(file_exists(PHP168_PATH . 'cache/install.php')) header("Location: ./");
-require_once(PHP168_PATH . 'php168/mysql_config.php');
+if(file_exists(PHP168_PATH . 'php168/mysql_config.php')) require_once(PHP168_PATH . 'php168/mysql_config.php');
 @set_time_limit(0);
 set_magic_quotes_runtime(0);
 if(!get_magic_quotes_gpc()){
@@ -43,7 +43,7 @@ else{ $onlineip=$_SERVER['REMOTE_ADDR']; }
 
 $onlineip = preg_replace("/^([\d\.]+).*/", "\\1", $onlineip);
 
-if($action=="initdb" || '' == $action){
+if($action=="initdb"){
 	$step = '';
 	if( '' == $dbname || '' == $dbuser || '' == $dbhost ){
 		$error = true;
