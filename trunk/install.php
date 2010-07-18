@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 error_reporting(0);
 define('PHP168_PATH', __FILE__ ? dirname(__FILE__).'/' : './');
 if(file_exists(PHP168_PATH . 'cache/install.php')) header("Location: ./");
@@ -42,72 +42,67 @@ elseif($_SERVER['HTTP_X_FORWARDED_FOR']){ $onlineip=$_SERVER['HTTP_X_FORWARDED_F
 else{ $onlineip=$_SERVER['REMOTE_ADDR']; }
 
 $onlineip = preg_replace("/^([\d\.]+).*/", "\\1", $onlineip);
-
-if($action=="initdb"){
-	$step = '';
-	if( '' == $dbname || '' == $dbuser || '' == $dbhost ){
-		$error = true;
-		$errormsg[] = "数据库主机,用户名,数据库不能为空";
-	}
-	if(!ereg("^([a-z0-9_]+)$", $db168)) {
-		$error = true;
-		$errormsg[] = "数据表前缀必须是a-z0-9_";
-	}
-	if( !@mysql_connect($dbhost, $dbuser, $dbpw) ) {
-		$error = true;
-		$errormsg[] = "数据库连接失败，请确认<br><br>数据库帐号:<font color=red>{$dbuser}</font><br><br>数据库密码:<font color=red>{$dbpw}</font><br><br>是否正确,如有问题请向空间商咨询";
-	}
-	if( !@mysql_select_db($dbname) )
-	{
-		if( !@mysql_query("CREATE DATABASE `$dbname`") )
-		{
-			showmsg("数据库虽然已连接成功，但数据库名<font color=red>{$dbname}</font>不对，连接不上去，请检查一下，是否正确,如有问题请向空间商咨询<br>");
+if(!in_array($action, array('initdb', 'adduser'))) $action = 'initdb';
+if($action == "initdb"){
+	if('POST' == $_SERVER["REQUEST_METHOD"]){
+		if( '' == $dbname || '' == $dbuser || '' == $dbhost ){
+			$error = true;
+			$errormsg[] = "数据库主机,用户名,数据库不能为空";
 		}
-	}
-	if( mysql_get_server_info() < '4.1' )
-	{
-		$dbcharset='';
-	}
-	$dbcharset && mysql_query("SET NAMES '$dbcharset'");
+		if(!ereg("^([a-z0-9_]+)$", $db168)) {
+			$error = true;
+			$errormsg[] = "数据表前缀必须是a-z0-9_";
+		}
+		if( !@mysql_connect($dbhost, $dbuser, $dbpw) ) {
+			$error = true;
+			$errormsg[] = "数据库连接失败，请确认<br><br>数据库帐号:<font color=red>{$dbuser}</font><br><br>数据库密码:<font color=red>{$dbpw}</font><br><br>是否正确,如有问题请向空间商咨询";
+		}
+		if( !@mysql_select_db($dbname) )
+		{
+			if( !@mysql_query("CREATE DATABASE `$dbname`") )
+			{
+				showmsg("数据库虽然已连接成功，但数据库名<font color=red>{$dbname}</font>不对，连接不上去，请检查一下，是否正确,如有问题请向空间商咨询<br>");
+			}
+		}
+		if( mysql_get_server_info() < '4.1' )
+		{
+			$dbcharset='';
+		}
+		$dbcharset && mysql_query("SET NAMES '$dbcharset'");
 
-	if( mysql_get_server_info() > '5.0' )
-	{
-		mysql_query("SET sql_mode=''");
-	}
+		if( mysql_get_server_info() > '5.0' ){
+			mysql_query("SET sql_mode=''");
+		}
 
-	if(	!is_writable(PHP168_PATH."php168/mysql_config.php")	)
-	{
-		$error = true;
-		$errormsg[]=("php168/mysql_config.php 文件不可写，请改属性为0777");
-	}
-	if(	!is_writable(PHP168_PATH."upload_files")	)
-	{
-		$error = true;
-		$errormsg[]=("upload_files/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
-	}
-	
-	if(	!is_writable(PHP168_PATH."php168"))	{
-		$error = true;
-		$errormsg[]=("php168/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
-	}
-	
-	if(	!is_writable(PHP168_PATH."php168/config.php")){
-		$error = true;
-		$errormsg[]=("php168/config.php 文件不可写，请改属性为0777");
-	}
+		if(	!is_writable(PHP168_PATH."upload_files")	)
+		{
+			$error = true;
+			$errormsg[]=("upload_files/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
+		}
+		
+		if(	!is_writable(PHP168_PATH."php168"))	{
+			$error = true;
+			$errormsg[]=("php168/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
+		}
 
-	if(	!is_writable(PHP168_PATH."php168/mysql_config.php")	){
-		$error = true;
-		$errormsg[]=("php168/mysql_config.php 文件不可写，请改属性为0777");
-	}
+		if(	!is_writable(PHP168_PATH . "cache") )	{
+			$error = true;
+			$errormsg[]=("/cache/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
+		}
+		
+		if(	is_file(PHP168_PATH . "php168/config.php") && !is_writable(PHP168_PATH . "php168/config.php")){
+			$error = true;
+			$errormsg[]=("php168/config.php 文件不可写，请改属性为0777");
+		}
 
-	if(	!is_writable(PHP168_PATH."cache") )	{
-		$error = true;
-		$errormsg[]=("/cache/ 目录不可写，请改属性为0777,其目录下的所有文件也要改为0777");
-	}
+		if(	is_file(PHP168_PATH . "php168/mysql_config.php") && !is_writable(PHP168_PATH."php168/mysql_config.php")	){
+			$error = true;
+			$errormsg[]=("php168/mysql_config.php 文件不可写，请改属性为0777");
+		}
 
-	
-	$writefile="
+
+		
+$writefile="
 
 /**
 * 以下变量需根据您的服务器说明档修改
@@ -123,20 +118,22 @@ if($action=="initdb"){
 \$pconnect = 0;				// 数据库是否持久连接(一般不必改)
 \$dbcharset = '$dbcharset';		// 数据库编码,手动更改可能会出现乱码
 \$dbinstall = true;
-\$dbversion = 15;
+\$dbversion = 16;
 ";
 
-	//导入数据
-	if(!$error){
-		writeover(PHP168_PATH . "php168/mysql_config.php",'<?php'.$writefile.'?>');
-		into_sql('');
-		$step = 'adduser';
+		//导入数据
+		if(!$error){
+			writeover(PHP168_PATH . "php168/mysql_config.php",'<?php'.$writefile.'?>');
+			into_sql('');
+			require_once(PHP168_PATH.'install/step2.php');
+			exit;
+		}
 	}
+	require_once(PHP168_PATH . 'install/step1.php');
+	exit;
 }
-
-
 elseif($action=="adduser"){
-	$step = 'adduser';
+	if('POST' == $_SERVER["REQUEST_METHOD"]){
 	require_once(PHP168_PATH . 'php168/mysql_config.php');
 	mysql_connect($dbhost,$dbuser,$dbpw);
 	mysql_select_db($dbname);
@@ -234,7 +231,7 @@ elseif($action=="adduser"){
 		writeover(PHP168_PATH."php168/friendlink.php",$cache);
 		
 		if(strlen($db168)!=3){
-			$query=@mysql_query("SELECT * FROM {$db168}label WHERE typesystem=1 ");
+			$query=@mysql_query("SELECT * FROM {$tbl_prefix}label WHERE typesystem=1 ");
 			while($rs=@mysql_fetch_array($query)){
 				$rs[code]=preg_replace("/s:([\d]+):\"([^\"]+)\"/eis","strlen_lable('\\1','\\2')",$rs[code]);
 				$rs[code]=addslashes($rs[code]);
@@ -277,9 +274,14 @@ elseif($action=="adduser"){
 		}
 		writeover(PHP168_PATH."cache/install.php", '');
 	}
+	require_once(PHP168_PATH.'install/step3.php');
+	exit;
+	}
+	require_once(PHP168_PATH.'install/step2.php');
+	exit;
 }
 
-require_once(PHP168_PATH.'install/make.htm');
+
 
 function readover($filename,$method="rb"){
 	if($handle=@fopen($filename,$method)){
