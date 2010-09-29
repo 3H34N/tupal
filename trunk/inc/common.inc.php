@@ -54,7 +54,7 @@ ob_start();		//ob_start('ob_gzhandler');
 header('Content-Type: text/html; charset=utf-8');
 unset($webdb,$Html_Type,$erp,$ltitle,$memberlevel);
 require(PHP168_PATH.'php168/config.php');
-$webdb[SystemType] && @include(PHP168_PATH."$webdb[SystemType]/php168/config.php");
+$webdb['SystemType'] && @include(PHP168_PATH."$webdb[SystemType]/php168/config.php");
 require_once(PHP168_PATH.'inc/function.inc.php');
 
 
@@ -156,15 +156,9 @@ $usr_oltime=intval($usr_oltime);
 
 
 /*用户登录模块*/
-if($webdb[passport_type]&&is_file(PHP168_PATH."php168/passport/{$webdb[passport_type]}.php")){
-	require_once(PHP168_PATH."php168/passport/{$webdb[passport_type]}.php");
-	$userDB = new p8_user;
-	$lfjdb = PassportUserdb();
-}else{
-	$TB=array("table"=>"{$pre}members","uid"=>"uid","username"=>"username","password"=>"password");
-	$userDB = new p8_user;
-	$lfjdb = $userDB->login_info();
-}
+$TB=array("table"=>"{$pre}members","uid"=>"uid","username"=>"username","password"=>"password");
+$userDB = new p8_user;
+$lfjdb = $userDB->login_info();
 
 //同步后台登录
 if($_COOKIE["adminID"]&&$detail=mymd5($_COOKIE["adminID"],'DE',$onlineip)){
@@ -181,16 +175,16 @@ if($lfjdb[yz]){
 	if($lfjdb['groupid']==3||$lfjdb['groupid']==4){
 		$web_admin=$sort_admin='1';
 	}
-	if( file_exists(PHP168_PATH."php168/group/{$lfjdb[groupid]}.php") ){
-		require_once( PHP168_PATH."php168/group/{$lfjdb[groupid]}.php");
+	if( file_exists(PHP168_PATH . "php168/group/{$lfjdb[groupid]}.php") ){
+		require_once( PHP168_PATH . "php168/group/{$lfjdb[groupid]}.php");
 	}else{
 		$lfjdb['groupid']=8;
-		@include_once( PHP168_PATH."php168/group/8.php");
+		@include_once( PHP168_PATH . "php168/group/8.php");
 	}
 	$lfjdb[C]=unserialize($lfjdb[config]);
 	if($usr_oltime>30||!$usr_oltime){
 		$usr_oltime>600 && $usr_oltime=600;
-		include(PHP168_PATH."php168/level.php");
+		include(PHP168_PATH . "php168/level.php");
 		$SQL="";
 		if( isset($memberlevel[$lfjdb[groupid]]) ){
 			//普通会员组按积分自动升级
@@ -275,8 +269,8 @@ if(!ereg("^http://",$webdb[admin_url])){
 	$webdb[admin_url]="$webdb[www_url]/$webdb[admin_url]";
 }
 
-$webdb[FlashGet_ID] || $webdb[FlashGet_ID] = '6370';	//快车联盟ID
-$webdb[XunLei_ID]	|| $webdb[XunLei_ID] = '08311';		//迅雷联盟ID
+$webdb[FlashGet_ID] || $webdb[FlashGet_ID] = '6372';	//快车联盟ID
+$webdb[XunLei_ID]	|| $webdb[XunLei_ID] = '08312';		//迅雷联盟ID
 
 //对附件做处理,删除冗余的附件.
 if($webdb[Del_MoreUpfile]&&$_POST&&$_COOKIE['IF_upfile']){
@@ -293,4 +287,3 @@ if($webdb[Del_MoreUpfile]&&$_POST&&$_COOKIE['IF_upfile']){
 	setcookie("IF_upfile",0,time()-31536000);
 }
 
-?>

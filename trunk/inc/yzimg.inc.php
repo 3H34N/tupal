@@ -13,4 +13,3 @@ function yzImgNumRand($lenth){
 	}
 	return $randval;
 }
-?>

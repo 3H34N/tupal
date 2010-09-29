@@ -319,6 +319,3 @@ function autourl($message){
 
 	return $message;
 }
-
-
-?>

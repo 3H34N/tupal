@@ -438,6 +438,3 @@ function change2pinyin($str,$type=''){
 	}
 	return $ret;
 }
-
-
-?>
