@@ -368,4 +368,3 @@ function yzImg($nmsg){
 		exit;
 	}
 }
-?>

@@ -1056,4 +1056,3 @@ function get_label_mv($string){
 	}
 }
 
-?>
